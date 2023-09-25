@@ -165,7 +165,7 @@ private:
  * The square subclass represents a solid square.
  */
 
-class Square : public Shape {
+class Square : public Rectangle {
 
 public:
   /*
