@@ -7,8 +7,9 @@
 #ifndef _shapelist_h
 #define _shapelist_h
 
-#include "gwindow.h"
+//#include "gwindow.h"
 #include "shape.h"
+#include <vector>
 
 /*
  * Class: ShapeList
@@ -17,9 +18,11 @@
  * individual elements of the ShapeList are pointers to Shape objects.
  */
 
-class ShapeList : public Vector<Shape *> {
+class ShapeList : public std::vector<Shape *> {
 
 public:
+
+  ShapeList();
 
 /*
  * Methods: moveToFront, moveToBack, moveForward, moveBackward
@@ -39,6 +42,16 @@ public:
    void moveForward(Shape *sp);
    void moveBackward(Shape *sp);
 
+  /*
+   * Method: getShapeAt
+   * Usage: shapes.getShapeAt(x, y);
+   * ----------------------------------------
+   * Returns a pointer to the shape closest to the front of the ShapeList 
+   * that contains the point (x, y).
+   */
+
+  Shape* getShapeAt(int x, int y);
+
 /*
  * Method: draw
  * Usage: shapes.draw(gw);
@@ -48,7 +61,7 @@ public:
  * to cover those further back. 
  */
 
-   void draw(GWindow & gw) const;
+  //void draw(GWindow & gw) const;
 };
 
 #endif

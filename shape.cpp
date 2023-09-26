@@ -1,12 +1,14 @@
+
 /*
  * File: shape.cpp
  * -----------------
  * This file implements the shape.h interface.
  */
 
-#include <string>
-#include "gwindow.h"
+//#include "gwindow.h"
 #include "shape.h"
+#include <string>
+#include <vector>
 
 /*
  * Implementation notes: Shape class 
@@ -33,12 +35,24 @@ void Shape::setColor(std::string color) {
   this->color = color;
 }
 
+int Shape::get_x() {
+  return this->x;
+}
+
+int Shape::get_y() {
+  return this->y;
+}
+
+std::string Shape::get_color() {
+  return this->color;
+}
+
 /*
  * Implementation notes: Line class
  * ------------------------------------
  * The constructor for the Line class has to chnage the specification of the
  * line from the endpoints passed the constructor to the representation that
- * uses a starting point alogn with dx, dy values.
+ * uses a starting point along with dx, dy values.
  */
 
 Line::Line(double x1, double y1, double x2, double y2) {
@@ -48,9 +62,32 @@ Line::Line(double x1, double y1, double x2, double y2) {
   this->dy = y2 - y1;
 }
 
-void Line::draw(GWindow & gw) {
-  gw.setColor(color);
-  gw.drawLine(x, y, x + dx, y + dy);
+
+int Line::get_x2() {
+  return (this->dx + this->x);
+}
+
+int Line::get_y2() {
+  return (this->dy + this->y);
+}
+
+//void Line::draw(GWindow & gw) {
+//  gw.setColor(color);
+//  gw.drawLine(x, y, x + dx, y + dy);
+//}
+
+bool Line::contains(double a, double b) {
+  if (a >= x && a <= (x + dx)) {
+    if (b >= (y - 0.5) && b <= (y + 0.5)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
 }
 
 /*
@@ -68,29 +105,91 @@ Rect::Rect(double x, double y, double width, double height) {
   this->height = height;
 }
 
-void Rect::draw(GWindow & gw) {
-  gw.setColor(color);
-  gw.fillRect(x, y, width, height);
+int Rect::get_width() {
+  return this->width;
 }
 
-Oval::Oval(double x, double y, double width double height) {
+int Rect::get_height() {
+  return this->height;
+}
+
+//void Rect::draw(GWindow & gw) {
+//  gw.setColor(color);
+//  gw.fillRect(x, y, width, height);
+//}
+
+bool Rect::contains(double a, double b) {
+  if (a >= x && a <= (x + width)){
+    if (b <= y && b >= (y - height)) {
+	return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
+}
+
+  Oval::Oval(double x, double y, double width, double height) {
   this->x = x;
   this->y = y;
   this->width = width;
   this->height = height;
 }
 
-void Oval::draw(GWindow & gw) {
-  gw.setColor(color);
-  gw.fillOval(x, y, width, height);
+int Oval::get_width() {
+  return this->width;
 }
 
-Square::Square(double x, double y, double width)
-  : Rectangle(x, y, width, width) {
-  //Empty
+int Oval::get_height() {
+  return this->height;
 }
 
-void Square::draw(GWindow & gw) {
-  gw.setColor(color);
-  gw.fillRect(x, y, width, width);
+//void Oval::draw(GWindow & gw) {
+//  gw.setColor(color);
+//  gw.fillOval(x, y, width, height);
+//}
+
+ bool Oval::contains(double a, double b) {
+   int center_x = (x + (width/2));
+   int center_y = (y - (height/2));
+   double check = (std::pow((a-center_x), 2) / std::pow(width, 2))
+     + (std::pow((b-center_y), 2) / std::pow(height, 2));
+   if (check <= 1) {
+     return true;
+   }
+   else {
+     return false;
+   }
+ }
+
+Square::Square(double x, double y, double width) {
+  this->x = x;
+  this->y = y;
+  this->width = width;
+}
+
+int Square::get_width() {
+  return this->width;
+}
+
+//void Square::draw(GWindow & gw) {
+//  gw.setColor(color);
+//  gw.fillRect(x, y, width, width);
+//}
+
+ bool Square::contains(double a, double b) {
+  if (a >= x && a <= (x + width)){
+    if (b <= y && b >= (y - width)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else {
+    return false;
+  }
 }

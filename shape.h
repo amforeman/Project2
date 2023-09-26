@@ -8,7 +8,10 @@
 #define _shape_h
 
 #include <string>
-#include "gwindow.h"
+#include <vector>
+#include <iostream>
+#include <cmath>
+//#include "gwindow.h"
 
 /*
  * Class: Shape
@@ -48,6 +51,10 @@ class Shape {
 
   void setColor(std::string color);
 
+  int get_x();
+  int get_y();
+  std::string get_color();
+
   /*
    * Abstract method: draw
    * Usage: shape.draw(gw);
@@ -56,13 +63,18 @@ class Shape {
    * This method is implemented by the specific shape subclasses.
    */
 
-  virtual void draw (GWindow & gw) = 0;
+  //virtual void draw (GWindow & gw) = 0;
 
   /*
-   *
+   * Method: contains
+   * Usage: shape.contains(a, b);
+   * -------------------------------------
+   * Returns true if the given point falls inside the shape and 
+   * false if the point falls outside the shape.
+   * This method is implemented by the specific shape subclasses.
    */
 
-  virtual bool contains(double x, double y) = 0;
+  virtual bool contains(double a, double b) = 0;
 
 protected:
 
@@ -92,9 +104,13 @@ public:
 
   Line(double x1, double y1, double x2, double y2);
 
+  int get_x2();
+  int get_y2();
+
   // Prototypes for the overridden virtual methods
 
-  virtual void draw(GWindow & gw);
+  //virtual void draw(GWindow & gw);
+  virtual bool contains(double a, double b);
 
 private:
   double dx;                     // Horizontal distance from x1 to x2
@@ -121,9 +137,13 @@ public:
 
   Rect(double x, double y, double width, double height);
 
+  int get_width();
+  int get_height();
+
   // Prototypes for the overridden virtual methods
 
-  virtual void draw(GWindow & gw);
+  //virtual void draw(GWindow & gw);
+  virtual bool contains(double a, double b);
 
 private:
 
@@ -148,10 +168,14 @@ public:
    */
 
   Oval(double x, double y, double width, double height);
-
+  
+  int get_width();
+  int get_height();
+  
   // Prototypes for the overridden virtual methods
 
-  virtual void draw(GWindow & gw);
+  //virtual void draw(GWindow & gw);
+  virtual bool contains(double a, double b);
 
 private:
   double width, height;               //Dimensions of the bounding rectangle
@@ -165,7 +189,7 @@ private:
  * The square subclass represents a solid square.
  */
 
-class Square : public Rectangle {
+class Square : public Shape {
 
 public:
   /*
@@ -177,10 +201,15 @@ public:
 
   Square(double x, double y, double width);
 
+  int get_width();
+
   // Prototypes for the overridden virtual methods
 
-  virtual void draw(GWindow & gw);
+  //virtual void draw(GWindow & gw);
+  virtual bool contains(double a, double b);
 
 private:
-  double width;                      // Dimensions of the square
+  double width;             // Dimensions of the square
+  
+};
 #endif
